@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-touch-fullscreen" content="YES" /> 
+        <meta name="format-detection" content="telephone=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <title>
+            Drag & Drop Sample
+        </title>
+        <style>
+            div.draggable {
+                width:200px;
+                height:100px;
+            }
+            div.droppable {
+                width:350px;
+                height:200px;
+            }
+        </style>
+        <script src="lib/widgetpad.js" type="text/javascript"></script> 
+        <script type="text/javascript">
+            <!--
+                function init(){
+                    /* Hide the status bar */
+                    setTimeout(function() { window.scrollTo(0, 1); }, 10);
+                    
+                    /* To prevent scrolling, call WidgetPad.noscroll(true); */
+                    WidgetPad.noscroll(true);
+                    
+                    Array.prototype.contains = function(value){
+                        var flg = false;
+                        for(var i in this){
+                            if(this[i] == value){
+                                flg = true;
+                            }
+                        }
+                        return flg;
+                    }
+                }
+                
+                
+                /*
+                 *  ドラッグ元のどういうデータを受け渡すのか考える
+                 */
+                function doDragStart(id) {
+                    //event.dataTransfer.setData('text/plain', 'ドラッグされたテキスト!')
+                    event.dataTransfer.setData('text/plain', id + ':' + event.offsetX + ':' + event.offsetY);
+                }
+                
+                /*
+                 *  ドラッグして、ドロップしようとする時
+                 */
+                function doDragOver() {
+                    //var type = event.dataTransfer.types.contains('text/plain');
+                    var type = event.dataTransfer.types.contains('text/plain');
+                    if (type){
+                        //ドロップを受け入れる
+                        event.preventDefault();
+                    }
+                }
+                
+                /*
+                 *  ドロップされた時
+                 */
+                function doDrop() {
+                    //ドラッグされたオブジェクトに保管されているデータを取り出す
+                    var data = event.dataTransfer.getData('text/plain');
+                    //ドロップされたターゲットのオブジェクトに取り出したデータをつっこむ
+                    /*
+                    alert(event.screenX + "," + event.screenY);
+                    alert(event.clientX + "," + event.clientY);
+                    alert(event.x + "," + event.y);
+                    alert(event.offsetX + "," + event.offsetY);
+                    */
+                    params = data.split(":");
+                    
+                    event.target.textContent   = data + '/' + event.offsetX + ':' + event.offsetY;
+                    //event.target.style.cssText = "background-color:red;";
+                    //document.getElementById('img' + params[0]).style.left = eval(event.offsetX + '-' + params[1] + '/2') + 'px';
+                    //document.getElementById('img' + params[0]).style.top  = eval(event.offsetY + '+' + params[2] + '/2') + 'px';
+                    document.getElementById('img' + params[0]).style.left = event.offsetX + 'px';
+                    document.getElementById('img' + params[0]).style.top  = event.offsetY + 'px';
+                }
+                
+            // -->
+        </script>
+        <noscript>
+            JavaScript対応ブラウザで表示してください。
+        </noscript>
+    </head>
+    <body onload="init()">
+        <p id="msg"></p>
+        
+        <div ondragover="event.preventDefault()" class="droppable" style="background-color:blue" ondragover="doDragOver(event)" ondrop="doDrop(event)">
+            ここにドロップ！
+        </div>
+        
+        
+        <img src="./img/avatar_w01_m.gif"
+            draggable="true" ondragstart="return doDragStart('1')" id="img1" name="img1" style="position:absolute;left:10px"
+            ondragover="event.preventDefault()"  ondragover="" ondrop="">
+        
+        <img src="./img/avatar_w02_m.gif"
+            draggable="true" ondragstart="return doDragStart('2')" id="img2" name="img2" style="position:absolute;left:100px"
+            ondragover="event.preventDefault()"  ondragover="" ondrop="">
+        
+        <img src="./img/avatar_w03_m.gif"
+            draggable="true" ontouchstart="return doDragStart('3')" id="img3" name="img3" style="position:absolute;left:190px"
+            ondragover="event.preventDefault()"  ondragover="" ondrop="">
+        
+    </body>
+</html>
